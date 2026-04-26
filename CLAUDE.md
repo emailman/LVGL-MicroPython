@@ -2,7 +2,7 @@
 
 ## What this project is
 
-A fully working MicroPython + LVGL 9.x setup for the **ESP32-WROVER-E-N8R8** (8 MB flash, 8 MB PSRAM) with an ILI9488 SPI display (320×480) and FT6236 capacitive touch controller. The goal was to get LVGL rendering correctly with touch input.
+A fully working MicroPython + LVGL 9.3.0 setup for the **ESP32-WROVER-E-N8R8** (8 MB flash, 8 MB PSRAM) with an ILI9488 SPI display (320×480) and FT6236 capacitive touch controller. The goal was to get LVGL rendering correctly with touch input.
 
 ## Hardware
 
@@ -66,8 +66,8 @@ Ili9488(Ili9488_hw, St77xx_lvgl)
 
 ## Key technical issues resolved
 
-### 1. LVGL 9.x API rename
-`lv.task_handler()` → `lv.timer_handler()` in LVGL 9.x. The old name silently throws
+### 1. LVGL 9.3.0 API rename
+`lv.task_handler()` → `lv.timer_handler()` in LVGL 9.3.0. The old name silently throws
 `AttributeError` which is caught by `lv_utils.py`'s exception handler, so LVGL never
 gets its timer called and nothing renders. Fixed in `lv_utils.py` (2 places) and `main.py`.
 
@@ -92,9 +92,9 @@ The RGB565→RGB666 conversion is done per-pixel. The `@micropython.viper` decor
 The function converts directly from LVGL's little-endian RGB565 format, skipping the
 `rgb565_swap_func` pass entirely.
 
-## LVGL 9.x API notes
+## LVGL 9.3.0 API notes
 
-| Old (LVGL 8.x) | New (LVGL 9.x) |
+| Old (LVGL 8.x) | New (LVGL 9.3.0) |
 |---|---|
 | `lv.scr_act()` | `lv.screen_active()` |
 | `lv.task_handler()` | `lv.timer_handler()` |

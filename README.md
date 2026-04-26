@@ -2,6 +2,8 @@
 
 A working MicroPython + LVGL setup for the **ESP32-WROVER-E-N8R8** with an ILI9488 SPI display and FT6236 capacitive touch controller. Includes a pre-built firmware image and all required Python driver files.
 
+![LVGL running on ESP32 with ILI9488 display and FT6236 touch](screenshot.jpg)
+
 ## Hardware
 
 | Component | Details |
@@ -81,7 +83,7 @@ BOARD_VARIANT=SPIRAM
 LV_CFLAGS="-DLV_COLOR_DEPTH=16"
 ```
 
-LVGL version: 9.x. MicroPython version: see `uos.uname()` on the device.
+LVGL version: **9.3.0**. MicroPython version: see `uos.uname()` on the device.
 
 ## ILI9488 quirks (hard-won)
 
@@ -93,7 +95,7 @@ The ILI9488 silently accepts COLMOD=0x55 but the display RAM write does not rend
 **2. Physical BGR panel stripe order.**  
 Most ILI9488 breakout modules have a BGR-ordered color panel. Without correction, red and blue are swapped (dark blue backgrounds appear brown). This driver sends pixels in BGR byte order to compensate.
 
-**3. LVGL 9.x API change.**  
+**3. LVGL 9.3.0 API change.**  
 `lv.task_handler()` was renamed to `lv.timer_handler()` in LVGL 9.x. The stock `lv_utils.py` from lv_micropython still uses the old name, causing a silent failure (exception is caught and swallowed) where LVGL never renders. The `lv_utils.py` in this repo is patched.
 
 ## License
