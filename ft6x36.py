@@ -11,11 +11,11 @@
 # before the swap.
 #
 # The nice thing about this driver is that it allows access to the second
-# finger, as the FT6X36 is multi-touch. (Two fingers max, with caveats on
+# finger, as the FT6X36 is multitouch. (Two fingers max, with caveats on
 # some boards.)
 #
 # The number of presses is in touch.presses, touch.points[0] and points[1]
-# hold the positions. LVGL is not (yet) multi-touch, so all it sees is the
+# hold the positions. LVGL is not (yet) multitouch, so all it sees is the
 # position in points[0].
 
 
@@ -35,10 +35,10 @@ class ft6x36:
         self.i2c = I2C(i2c_dev, sda=Pin(sda), scl=Pin(scl), freq=freq)
         self.addr = addr
         try:
-            print("FT6X36 touch IC ready (fw id 0x{0:X} rel {1:d}, lib {2:X})".format( \
-                int.from_bytes(self.i2c.readfrom_mem(self.addr, 0xA6, 1), "big"), \
-                int.from_bytes(self.i2c.readfrom_mem(self.addr, 0xAF, 1), "big"), \
-                int.from_bytes(self.i2c.readfrom_mem(self.addr, 0xA1, 2), "big") \
+            print("FT6X36 touch IC ready (fw id 0x{0:X} rel {1:d}, lib {2:X})".format(
+                int.from_bytes(self.i2c.readfrom_mem(self.addr, 0xA6, 1), "big"),
+                int.from_bytes(self.i2c.readfrom_mem(self.addr, 0xAF, 1), "big"),
+                int.from_bytes(self.i2c.readfrom_mem(self.addr, 0xA1, 2), "big")
             ))
         except:
             print("FT6X36 touch IC not responding")
