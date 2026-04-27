@@ -12,7 +12,7 @@ A working MicroPython + LVGL setup for the **ESP32-WROVER-E-N8R8** with an ILI94
 | Display | ILI9488, 320×480, SPI |
 | Touch | FT6236 (FT6x36 family), I2C, address 0x38 |
 
-### Wiring
+## Wiring - ThingPulse ePulse Feather Wing v2.0.1 in Color Kit Grande
 
 | Signal | GPIO |
 |---|---|
