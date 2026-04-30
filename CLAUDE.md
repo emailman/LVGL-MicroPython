@@ -4,7 +4,7 @@
 
 A fully working MicroPython + LVGL 9.3.0 setup for the **ESP32-WROVER-E-N8R8** (8 MB flash, 8 MB PSRAM) with an ILI9488 SPI display (320×480) and FT6236 capacitive touch controller. The goal was to get LVGL rendering correctly with touch input.
 
-## Hardware
+## Hardware - ThingPulse ePulse Feather Wing v2.0.1 in Color Kit Grande
 
 - **MCU:** ESP32-WROVER-E-N8R8
 - **Display:** ILI9488, 320×480, SPI (CLK=5, MOSI=18, MISO=19, DC=2, CS=15, RST=4, BL=32)
