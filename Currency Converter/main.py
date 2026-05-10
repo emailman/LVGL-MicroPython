@@ -21,7 +21,8 @@ PIN_LCD_BL = 32
 PIN_I2C_SDA = 23
 PIN_I2C_SCL = 22
 
-ALL_CURRENCIES = ["USD", "EUR", "GBP", "JPY", "CAD", "AUD", "CHF", "CNY", "MXN"]
+ALL_CURRENCIES = ["USD", "EUR", "GBP", "JPY",
+                  "CAD", "AUD", "CHF", "CNY", "MXN"]
 CURRENCY_NAMES = {
     "USD": "US Dollar",
     "EUR": "Euro",
@@ -102,8 +103,8 @@ class CurrencyUI:
     TEXT_RED = 0xff4444
     ROW_ALT = 0x161b22
 
-    def __init__(self, scr, app, initial_base):
-        self._app = app
+    def __init__(self, scr, _app: "CurrencyApp", initial_base: str):
+        self._app = _app
         self._row_codes = get_targets(initial_base)
         scr.set_style_bg_color(lv.color_hex(self.DARK_BG), lv.PART.MAIN)
         scr.set_style_pad_all(0, lv.PART.MAIN)
@@ -129,7 +130,9 @@ class CurrencyUI:
 
         # Base currency label (display only)
         self.base_lbl = lv.label(scr)
-        self.base_lbl.set_text("Base: {} ({})".format(initial_base, CURRENCY_NAMES.get(initial_base, "")))
+        self.base_lbl.set_text("Base: {} ({})"
+                               .format(initial_base,
+                                       CURRENCY_NAMES.get(initial_base, "")))
         if f16:
             self.base_lbl.set_style_text_font(f16, lv.PART.MAIN)
         self.base_lbl.set_style_text_color(lv.color_hex(self.TEXT_WHITE), lv.PART.MAIN)
@@ -171,10 +174,13 @@ class CurrencyUI:
                 row_bg.remove_flag(lv.obj.FLAG.SCROLLABLE)
 
             code_lbl = lv.label(scr)
-            code_lbl.set_text("{} ({})".format(code, CURRENCY_NAMES.get(code, "")))
+            code_lbl.set_text("{} ({})"
+                              .format(code,
+                                      CURRENCY_NAMES.get(code, "")))
             if f16:
                 code_lbl.set_style_text_font(f16, lv.PART.MAIN)
-            code_lbl.set_style_text_color(lv.color_hex(self.TEXT_WHITE), lv.PART.MAIN)
+            code_lbl.set_style_text_color(lv.color_hex(self.TEXT_WHITE),
+                                          lv.PART.MAIN)
             code_lbl.align(lv.ALIGN.TOP_LEFT, 12, y + 10)
             self._code_labels.append(code_lbl)
 
@@ -186,21 +192,24 @@ class CurrencyUI:
             val_lbl.align(lv.ALIGN.TOP_RIGHT, -12, y + 10)
             self._val_labels.append(val_lbl)
 
-            # Transparent full-width overlay created last so it's on top — captures row taps
+            # Transparent full-width overlay created last so it's on top -
+            # captures row taps
             row_touch = lv.obj(scr)
             row_touch.set_size(320, 38)
             row_touch.set_pos(0, y)
             row_touch.set_style_bg_opa(lv.OPA.TRANSP, lv.PART.MAIN)
             row_touch.set_style_border_width(0, lv.PART.MAIN)
             row_touch.remove_flag(lv.obj.FLAG.SCROLLABLE)
-            row_touch.add_event_cb(lambda evt, idx=i: self._on_row_tap(idx), lv.EVENT.CLICKED, None)
+            row_touch.add_event_cb(lambda evt, idx=i: self._on_row_tap(idx),
+                                   lv.EVENT.CLICKED, None)
 
         # ECB date footer
         self.footer_lbl = lv.label(scr)
         self.footer_lbl.set_text("floatrates.com")
         if f14:
             self.footer_lbl.set_style_text_font(f14, lv.PART.MAIN)
-        self.footer_lbl.set_style_text_color(lv.color_hex(self.TEXT_DIM), lv.PART.MAIN)
+        self.footer_lbl.set_style_text_color(lv.color_hex(self.TEXT_DIM),
+                                             lv.PART.MAIN)
         self.footer_lbl.align(lv.ALIGN.TOP_MID, 0, 442)
 
         # Status / error label
@@ -208,7 +217,8 @@ class CurrencyUI:
         self.status_lbl.set_text("")
         if f14:
             self.status_lbl.set_style_text_font(f14, lv.PART.MAIN)
-        self.status_lbl.set_style_text_color(lv.color_hex(self.TEXT_RED), lv.PART.MAIN)
+        self.status_lbl.set_style_text_color(lv.color_hex(self.TEXT_RED),
+                                             lv.PART.MAIN)
         self.status_lbl.align(lv.ALIGN.TOP_MID, 0, 462)
 
         # Keyboard created last so it renders on top of all other elements
@@ -217,17 +227,21 @@ class CurrencyUI:
         self.kb.add_flag(lv.obj.FLAG.HIDDEN)
 
     def set_base(self, base):
-        self.base_lbl.set_text("Base: {} ({})".format(base, CURRENCY_NAMES.get(base, "")))
+        self.base_lbl.set_text("Base: {} ({})"
+                               .format(base,
+                                       CURRENCY_NAMES.get(base, "")))
 
-    def show_status(self, msg, color=None):
-        self.status_lbl.set_style_text_color(
-            lv.color_hex(color if color else self.TEXT_RED), lv.PART.MAIN)
+    def show_status(self, msg: str, color: int = TEXT_RED):
+        self.status_lbl.set_style_text_color(lv.color_hex(color),
+                                             lv.PART.MAIN)
         self.status_lbl.set_text(msg)
 
     def update_row_codes(self, targets):
         self._row_codes = list(targets)
         for i, code in enumerate(self._row_codes):
-            self._code_labels[i].set_text("{} ({})".format(code, CURRENCY_NAMES.get(code, "")))
+            self._code_labels[i].set_text("{} ({})"
+                                          .format(code,
+                                                  CURRENCY_NAMES.get(code, "")))
             self._val_labels[i].set_text("--")
 
     def update_rows(self, rates, amount):
@@ -239,20 +253,20 @@ class CurrencyUI:
                 lbl.set_text("--")
 
     def _on_row_tap(self, idx):
-        self._app._on_row_tap(self._row_codes[idx])
+        self._app.on_row_tap(self._row_codes[idx])
 
-    def _on_amount_change(self, evt):
+    def _on_amount_change(self, _evt):
         try:
             amount = float(self.amount_ta.get_text() or "0")
         except (ValueError, TypeError):
             return
-        self._app._update_display(amount)
+        self._app.update_display(amount)
 
-    def _on_ta_focus(self, evt):
+    def _on_ta_focus(self, _evt):
         self.kb.set_textarea(self.amount_ta)
         self.kb.remove_flag(lv.obj.FLAG.HIDDEN)
 
-    def _on_ta_defocus(self, evt):
+    def _on_ta_defocus(self, _evt):
         self.kb.add_flag(lv.obj.FLAG.HIDDEN)
 
 
@@ -285,7 +299,7 @@ class CurrencyApp:
 
         self._fetch()
 
-    def _on_row_tap(self, code):
+    def on_row_tap(self, code):
         self._base = code
         self.ui.set_base(code)
         self.ui.update_row_codes(get_targets(code))
@@ -310,7 +324,7 @@ class CurrencyApp:
         except Exception as e:
             self.ui.show_status("Error: {}".format(str(e))[:40])
 
-    def _update_display(self, amount):
+    def update_display(self, amount):
         self.ui.update_rows(self._rates, amount)
 
 
